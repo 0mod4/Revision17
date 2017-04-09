@@ -1,4 +1,3 @@
-
 function Scene ()
 {
 	this.start = Date.now();
@@ -6,7 +5,7 @@ function Scene ()
 	//this.cooldown = new Cooldown(this.time);
 
 	this.camera = new Camera();
-	this.entityArray = [];
+	this.drawables = [];
 
 	this.alpha = false;
 
@@ -35,13 +34,14 @@ function Scene ()
 		//this.cooldown.update(this.time);
 		this.camera.update();
 
-		for (var i = 0; i < this.entityArray.length; ++i) {
-			this.entityArray[i].draw(this.camera, this.time);
+		for (var i = 0; i < this.drawables.length; ++i) {
+			this.drawables[i].draw(this.camera, this.time);
 		}
+
 	};
 
-	this.addEntity = function (entity)
+	this.addDrawable = function (drawable)
 	{
-		this.entityArray.push(entity);
+		this.drawables.push(drawable);
 	};
 }

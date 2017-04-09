@@ -1,6 +1,7 @@
 
 function TestScene ()
 {
+	console.log("in testScene");
 	Scene.call(this); 
 
 	this.init = function (time)
@@ -63,6 +64,26 @@ function TestScene ()
 		// this.addEntity(this.targetBoids);
 		// this.addEntity(this.bush);
 		// this.addEntity(this.boidManager);
+
+		var arrays = {
+		  position: [-1,-1,0, 1,-1,0, -1,1,0, -1,1,0, 1,-1,0, 1,1,0],
+		};
+
+		var vert;
+		var frag;
+
+		console.log("load test.vert");
+		loadFile("../shaders/test.vert", function (error, file) { 
+			vert = content;
+		});
+
+		console.log("load test.frag");
+		loadFile("../shaders/test.frag", function (error, file) {
+			frag = content;
+		})
+
+		this.testDrawable = new Drawable(arrays, );
+		this.addDrawable(testDrawable);
 	};
 
 	this.update = function ()

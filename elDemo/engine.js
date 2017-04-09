@@ -14,7 +14,8 @@ var planetVideo;
 
 engine.init = function ()
 {
-	gl = twgl.getWebGLContext(document.getElementById("view"), { premultipliedAlpha: false, alpha: false  });
+	console.log("engine.init");
+	gl = twgl.getWebGLContext(document.getElementById("view"), { premultipliedAlpha: false, alpha: false });
 	gl.getExtension("OES_texture_float");
 	gl.getExtension("OES_texture_float_linear");
 	twgl.setDefaults({attribPrefix: "a_"});
