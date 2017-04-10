@@ -1,10 +1,10 @@
 function Shader (vertName, fragName, uniforms)
 {
-	loadFile("/elDemo/shader/".concat(vertName), function (error, content) { 
+	loadFile("/resources/shaders/".concat(vertName), function (error, content) { 
 		this.vert = content;
 	});
 
-	loadFile("/elDemo/shader/".concat(fragName), function (error, content) {
+	loadFile("/resources/shaders/".concat(fragName), function (error, content) {
 		this.frag = content;
 	});
 
