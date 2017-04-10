@@ -5,6 +5,7 @@ var State = { Test: 0 };
 engine.state = State.Test;
 engine.isReady = false;
 
+var stats;
 var testScene;
 var gl, m4 = twgl.m4;
 var planetVideo;
@@ -17,6 +18,10 @@ var bufferInfo;
 
 engine.init = function ()
 {
+		stats = new Stats();
+		stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+		document.body.appendChild(stats.dom);
+
 		gl = twgl.getWebGLContext(document.getElementById("c"), { premultipliedAlpha: false, alpha: false });
 		gl.getExtension("OES_texture_float");
 		gl.getExtension("OES_texture_float_linear");
@@ -41,6 +46,7 @@ engine.init = function ()
 };
 
 function render(time) {
+	stats.begin();
 	twgl.resizeCanvasToDisplaySize(gl.canvas);
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -48,6 +54,8 @@ function render(time) {
 	testAlphaScene.update();
 	if (gl.getError() !== 0)
 		console.log(gl.getError());
+	stats.end();
+
 	requestAnimationFrame(render);
 }
 // engine.init = function ()
