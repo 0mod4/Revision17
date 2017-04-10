@@ -1,4 +1,3 @@
-
 function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 {
 	this.buffer = twgl.createBufferInfoFromArrays(gl, bufferArray);
@@ -21,32 +20,36 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 
 	this.draw = function (camera, time)
 	{
-		m4.translation(this.position, this.matrix);
-		m4.rotateX(this.matrix, this.orientation[0], this.matrix);
-		m4.rotateY(this.matrix, this.orientation[1], this.matrix);
-		m4.rotateZ(this.matrix, this.orientation[2], this.matrix);
-		m4.translate(this.matrix, this.anchor, this.matrix);
-		m4.scale(this.matrix, this.scale, this.matrix);
+		if (this.shader.state == 1) {
+			m4.translation(this.position, this.matrix);
+			m4.rotateX(this.matrix, this.orientation[0], this.matrix);
+			m4.rotateY(this.matrix, this.orientation[1], this.matrix);
+			m4.rotateZ(this.matrix, this.orientation[2], this.matrix);
+			m4.translate(this.matrix, this.anchor, this.matrix);
+			m4.scale(this.matrix, this.scale, this.matrix);
 
-		this.shader.uniforms.u_world = this.matrix;
-		m4.multiply(this.matrix, camera.viewProjection, this.shader.uniforms.u_view);
+			this.shader.uniforms.u_world = this.matrix;
+			m4.multiply(this.matrix, camera.viewProjection, this.shader.uniforms.u_view);
 
-		this.shader.uniforms.u_time = time || 0;
-		this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+			this.shader.uniforms.u_time = time || 0;
+			this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
 
-		this.shader.uniforms.u_cameraDirection[0] = camera.target[0] - camera.position[0];
-		this.shader.uniforms.u_cameraDirection[1] = camera.target[1] - camera.position[1];
-		this.shader.uniforms.u_cameraDirection[2] = camera.target[2] - camera.position[2];
+			this.shader.uniforms.u_cameraDirection[0] = camera.target[0] - camera.position[0];
+			this.shader.uniforms.u_cameraDirection[1] = camera.target[1] - camera.position[1];
+			this.shader.uniforms.u_cameraDirection[2] = camera.target[2] - camera.position[2];
 
-		gl.useProgram(this.shader.program);
-		twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
-		this.shader.uniforms.time = time||0;
-		twgl.setUniforms(this.shader.info, this.shader.uniforms);
-		//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
-		twgl.drawBufferInfo(gl, this.buffer);
+			gl.useProgram(this.shader.program);
+			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
+			this.shader.uniforms.time = time||0;
+			twgl.setUniforms(this.shader.info, this.shader.uniforms);
+			//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
+			twgl.drawBufferInfo(gl, this.buffer);
 
-		// this.axis.matrix = this.matrix;
-		// this.axis.draw(camera);
+			// this.axis.matrix = this.matrix;
+			// this.axis.draw(camera);
+		} else {
+			console.log("Waiting for shaders to load...")
+		}
 	};
 
 	this.translate = function (x, y, z)
