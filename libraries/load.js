@@ -23,7 +23,7 @@ function loadFile(url, callback)
 	request.send();
 }
 
-function loadFiles(files, callback, callbackProgress) {
+function loadFiles(files, callback, callbackProgress, target) {
 	var numToLoad = 0;
 	var loadedFiles = {};
 
@@ -31,11 +31,15 @@ function loadFiles(files, callback, callbackProgress) {
 		callbackProgress(0);
 	}
 
+	if (target === undefined) {
+		target = 0;
+	}
+
 	function callbackOnce(err, content) {
 		if (callback) {
 			var cb = callback;
 			callback = undefined;
-			return cb(err, content);
+			return cb(err, content, target);
 		}
 	};
 
