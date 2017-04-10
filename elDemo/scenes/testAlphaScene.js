@@ -20,7 +20,7 @@
 
 	var red_frag = 
 		"void main() {"+
-		"	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);"+
+		"	gl_FragColor = vec4(1.0, 0.0, 0.0, 0.4);"+
 		"}";
 		
 		//precision mediump float;
@@ -41,10 +41,11 @@ function TestAlphaScene ()
 {
 	Scene.call(this); 
 
-	this.init = function (time)
+	this.init = function (duration, time)
 	{
 		this.camera.position = [0, 2, -5];
 		this.camera.target = [0, 2, 0];
+		this.duration = duration;
 
 		this.alpha = true;
 

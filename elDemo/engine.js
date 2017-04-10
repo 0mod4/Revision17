@@ -1,12 +1,12 @@
 
 var engine = {};
 
-var State = { Test: 0 };
-engine.state = State.Test;
+var State = { Scene1: 0, Scene2: 1, Scene3: 2, End: 3 };
+engine.state = State.Scene1;
 engine.isReady = false;
 
 var stats;
-var testScene;
+var Scene1, Scene2, Scene3;
 var gl, m4 = twgl.m4;
 var planetVideo;
 
@@ -26,11 +26,14 @@ engine.init = function ()
 		gl.getExtension("OES_texture_float");
 		gl.getExtension("OES_texture_float_linear");
 
-		testScene = new TestScene();
-		testScene.init();
+		Scene1 = new TestScene();
+		Scene1.init(500);
 
-		testAlphaScene = new TestAlphaScene();
-		testAlphaScene.init();
+		Scene2 = new TestAlphaScene();
+		Scene2.init(3000);
+
+		Scene3 = new TestScene();
+		Scene3.init(3000);
 
 		//blender.init();
 		//music = document.getElementById("music");
@@ -43,6 +46,8 @@ engine.init = function ()
 			console.log(gl.getError());
 
 		requestAnimationFrame(render);
+
+		//loadAssets();
 };
 
 function render(time) {
@@ -50,38 +55,44 @@ function render(time) {
 	twgl.resizeCanvasToDisplaySize(gl.canvas);
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-	//testScene.update();
-	testAlphaScene.update();
+	switch (engine.state)
+	{
+		case State.Scene1: {
+			Scene1.update();
+			if(Scene1.isOver())
+			{
+				engine.state = State.Scene2;
+				Scene2.run();
+			}
+			break;
+		}
+		case State.Scene2: {
+			Scene2.update();
+			if(Scene2.isOver())
+			{
+				console.log("Scene 2 over");
+				engine.state = State.Scene3;
+				Scene3.run();
+			}
+			break;
+		}
+		case State.Scene3: {
+			Scene3.update();
+			if(Scene3.isOver())
+				engine.state = State.End;
+			break;
+		}
+		default: {
+			break;
+		}
+	}
 	if (gl.getError() !== 0)
 		console.log(gl.getError());
 	stats.end();
 
 	requestAnimationFrame(render);
 }
-// engine.init = function ()
-// {
-// 	console.log("engine.init");
-// 	gl = twgl.getWebGLContext(document.getElementById("view"), { premultipliedAlpha: false, alpha: false });
-// 	gl.getExtension("OES_texture_float");
-// 	gl.getExtension("OES_texture_float_linear");
-// 	twgl.setDefaults({attribPrefix: "a_"});
 
-// 	testScene = new TestScene();
-// 	testScene.init();
-// 	//blender.init();
-
-// 	//music = document.getElementById("music");
-// 	//music.oncanplaythrough = function() {
-// 	//	musicIsReady = true;
-// 	//};
-// 	//music.load();
-
-// 	requestAnimationFrame(render);
-
-// 	console.log("Finished engine.init");
-
-// 	//loadAssets();
-// };
 
 // function render (time) 
 // {

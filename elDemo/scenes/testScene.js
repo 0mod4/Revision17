@@ -36,10 +36,11 @@ function TestScene ()
 {
 	Scene.call(this); 
 
-	this.init = function (time)
+	this.init = function (duration, time)
 	{
 		this.camera.position = [0, 2, -5];
 		this.camera.target = [0, 2, 0];
+		this.duration = duration;
 
 		//this.vegetation = new PointCloud("vegetation.ply", 20);
 		//this.vegetation.setLeafSize([0.2, 0.1]);
