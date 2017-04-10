@@ -24,7 +24,7 @@ function TestAlphaScene ()
 		  position: [-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0],
 		};
 		uniforms = {};
-		this.testAlphaDrawable = new Drawable(arrays, "test.vert", "test.frag", uniforms);
+		this.testAlphaDrawable = new Drawable(arrays, "test.vert", "red.frag", uniforms);
 		
 		this.addDrawable(this.testAlphaDrawable);
 		this.addDrawable(this.testDrawable);
