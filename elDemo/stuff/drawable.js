@@ -4,11 +4,11 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 	this.buffer = twgl.createBufferInfoFromArrays(gl, bufferArray);
 
 	this.shader = new Shader(vertexShader, fragmentShader, uniforms);
-	this.shader.uniforms.u_time = 0;
-	this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
-	this.shader.uniforms.u_view = m4.identity();
-	this.shader.uniforms.u_world = m4.identity();
-	this.shader.uniforms.u_cameraDirection = [0,0,1];
+	//this.shader.uniforms.u_time = 0;
+	//this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+	//this.shader.uniforms.u_view = m4.identity();
+	//this.shader.uniforms.u_world = m4.identity();
+	//this.shader.uniforms.u_cameraDirection = [0,0,1];
 
 	this.displayType = gl.TRIANGLES;
 	this.position = [0, 0, 0];
@@ -40,6 +40,8 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 
 		gl.useProgram(this.shader.program);
 		twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
+		this.shader.uniforms.time = time||0;
+		console.log(this.shader.uniforms);
 		twgl.setUniforms(this.shader.info, this.shader.uniforms);
 		//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
 		console.log("draw drawable");
