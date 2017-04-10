@@ -47,8 +47,6 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 
 			// this.axis.matrix = this.matrix;
 			// this.axis.draw(camera);
-		} else {
-			console.log("Waiting for shaders to load...")
 		}
 	};
 
