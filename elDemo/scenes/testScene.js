@@ -119,7 +119,7 @@ function TestScene ()
 		// 	frag = content;
 		// })
 
-		this.testDrawable = new Drawable(arrays, vert, frag, uniforms);
+		this.testDrawable = new Drawable(arrays, "test.vert", "test.frag", uniforms);
 		this.addDrawable(this.testDrawable);
 	};
 

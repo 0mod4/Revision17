@@ -112,13 +112,13 @@ function TestAlphaScene ()
 			time: time * 0.001,
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
-		this.testDrawable = new Drawable(arrays, vert, frag, uniforms);
+		this.testDrawable = new Drawable(arrays, "test.vert", "test.frag", uniforms);
 
 		arrays = {
 		  position: [-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0],
 		};
 		uniforms = {};
-		this.testAlphaDrawable = new Drawable(arrays, vert, red_frag, uniforms);
+		this.testAlphaDrawable = new Drawable(arrays, "test.vert", "test.frag", uniforms);
 		
 		this.addDrawable(this.testAlphaDrawable);
 		this.addDrawable(this.testDrawable);
