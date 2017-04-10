@@ -20,21 +20,22 @@ function Scene ()
 
 	this.draw = function ()
 	{
-		// gl.enable(gl.DEPTH_TEST);
+		gl.enable(gl.DEPTH_TEST);
 
-		// if (this.alpha) {
-		// 	gl.enable(gl.BLEND);
-		// 	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	
-		// }
+		if (this.alpha) {
+			gl.enable(gl.BLEND);
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	
+		}
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		
 		this.time = (Date.now() - this.start) / 1000;
 		// //this.cooldown.update(this.time);
-		// this.camera.update();
+		this.camera.update();
 
 		for (var i = 0; i < this.drawables.length; ++i) {
 			this.drawables[i].draw(this.camera, this.time);
+			console.log("draw drawable "+i);
 		}
 
 	};

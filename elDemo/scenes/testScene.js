@@ -34,7 +34,6 @@
 
 function TestScene ()
 {
-	console.log("in testScene");
 	Scene.call(this); 
 
 	this.init = function (time)
