@@ -1,3 +1,36 @@
+	var vert =         
+        "attribute vec4 position;"+
+		"void main() {"+
+		"	gl_Position = position;"+
+		"}";
+
+	var frag = //caution! have a problem with comments in this format
+		"precision mediump float;"+
+		"uniform vec2 resolution;"+
+		"uniform float time;"+
+		"void main() {"+
+		"	vec2 uv = gl_FragCoord.xy / resolution;"+
+		"	float color = 0.0;"+
+		"	color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );"+
+		"	color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );"+
+		"	color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );"+
+		"	color *= sin( time / 10.0 ) * 0.5;"+
+		"	gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );"+
+		"}";
+		
+		//precision mediump float;
+		//uniform vec2 resolution;
+		//uniform float time;
+		//void main() {
+		//	vec2 uv = gl_FragCoord.xy / resolution;
+		//	float color = 0.0;
+		//	// lifted from glslsandbox.com
+		//	color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );
+		//	color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );
+		//	color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );
+		//	color *= sin( time / 10.0 ) * 0.5;
+		//	gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
+		//}
 
 function TestScene ()
 {
@@ -69,21 +102,26 @@ function TestScene ()
 		  position: [-1,-1,0, 1,-1,0, -1,1,0, -1,1,0, 1,-1,0, 1,1,0],
 		};
 
-		var vert;
-		var frag;
+		var uniforms = {
+			time: time * 0.001,
+			resolution: [gl.canvas.width, gl.canvas.height],
+		};
 
-		console.log("load test.vert");
-		loadFile("../shaders/test.vert", function (error, file) { 
-			vert = content;
-		});
+		// var vert;
+		// var frag;
 
-		console.log("load test.frag");
-		loadFile("../shaders/test.frag", function (error, file) {
-			frag = content;
-		})
+		// console.log("load test.vert");
+		// loadFile("../shaders/test.vert", function (error, file) { 
+		// 	vert = content;
+		// });
 
-		this.testDrawable = new Drawable(arrays, );
-		this.addDrawable(testDrawable);
+		// console.log("load test.frag");
+		// loadFile("../shaders/test.frag", function (error, file) {
+		// 	frag = content;
+		// })
+
+		this.testDrawable = new Drawable(arrays, vert, frag, uniforms);
+		this.addDrawable(this.testDrawable);
 	};
 
 	this.update = function ()

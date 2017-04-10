@@ -2,15 +2,41 @@
 <html>
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 	<title>Revision17</title>
-	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="demo.css" />
 	
 	<script src="libraries/load.js"></script>
 	<script src="libraries/twgl-full.js"></script>
+
 	<script src="libraries/gl-matrix-min.js"></script>
 	<script src="libraries/blender-html5-animations.js"></script>
 	<script src="libraries/audiostreamsource.min.js"></script>
 	<script src="libraries/jquery-3.1.0.js"></script>
+
+	<!-- FOR TESTING
+	<script id="vs" type="notjs">
+		attribute vec4 position;
+		void main() {
+			gl_Position = position;
+		}
+	</script>
+
+	<script id="fs" type="notjs">
+		precision mediump float;
+		uniform vec2 resolution;
+		uniform float time;
+		void main() {
+			vec2 uv = gl_FragCoord.xy / resolution;
+			float color = 0.0;
+			// lifted from glslsandbox.com
+			color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );
+			color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );
+			color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );
+			color *= sin( time / 10.0 ) * 0.5;
+			gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
+		}
+	</script>-->
 
 <!-- 	<script src="scripts/helpers/maths/utils.js"></script>
 	<script src="scripts/helpers/maths/cooldown.js"></script>
@@ -70,7 +96,7 @@
 	<!-- <script data-main="scripts/main" src="libraries/require.js"></script> -->
 </head>
 <body>
-	<canvas id="view"></canvas>
+	<canvas id="c"></canvas>
 <!-- 	<audio id="music">
   		<source src="assets/music.wav" type="audio/wav">
   	</audio> -->
