@@ -1,12 +1,12 @@
 
 var engine = {};
 
-var State = { Progressbar: 0, Scene1: 1, Scene2: 2, End: 3};
-engine.state = State.Progressbar;
+var State = {Begin: 0, Progressbar: 1, Scene1: 2, End: 3};
+engine.state = State.Begin;
 engine.isReady = false;
 
 var stats;
-var Progressbar, Scene1, Scene2;
+var Progressbar, Scene1;
 var gl, m4 = twgl.m4;
 var planetVideo;
 
@@ -26,13 +26,10 @@ engine.init = function ()
 		gl.getExtension("OES_texture_float_linear");
 
 		Progressbar = new Progressbar();
-		Progressbar.init(2000);
+		Progressbar.init(5000);
 
 		Scene1 = new TestScene();
 		Scene1.init(5000);
-
-		Scene2 = new TestScene2();
-		Scene2.init(5000);
 
 		//music = document.getElementById("music");
 		//music.oncanplaythrough = function() {
@@ -43,6 +40,7 @@ engine.init = function ()
 		//if (gl.getError() !== 0)
 		//	console.log(gl.getError());
 
+		Progressbar.run();
 		requestAnimationFrame(render);
 };
 
@@ -53,32 +51,30 @@ function render(time) {
 
 	switch (engine.state)
 	{
+		case State.Begin: {
+			console.log("Begin.")
+			engine.state = State.Progressbar;
+			console.log("Next: Progressbar");
+			break;
+		}
 		case State.Progressbar: {
 			Progressbar.update();
 			if(Progressbar.isOver())
 			{
 				console.log("Progressbar is over");
 				engine.state = State.Scene1;
-				Progressbar.run();
+				Scene1.run();
+				console.log("Next: Scene 1");
 			}
+			break;
 		}
 		case State.Scene1: {
 			Scene1.update();
 			if(Scene1.isOver())
 			{
 				console.log("Scene 1 over");
-				engine.state = State.Scene2;
-				Scene2.run();
-			}
-			break;
-		}
-		case State.Scene2: {
-			Scene2.update();
-			if(Scene2.isOver())
-			{
-				console.log("Scene 2 over");
 				engine.state = State.End;
-				Scene3.run();
+				console.log("End.");
 			}
 			break;
 		}

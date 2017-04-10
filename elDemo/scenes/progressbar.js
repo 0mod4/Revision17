@@ -14,8 +14,7 @@ function Progressbar ()
 
 		var uniforms = {
 			time: time * 0.001,
-			resolution: [gl.canvas.width, gl.canvas.height],
-			progress: time/duration,
+			resolution: [gl.canvas.width, gl.canvas.height]
 		};
 
 		this.testDrawable = new Drawable(arrays, "test.vert", "progressbar.frag", uniforms);
@@ -32,5 +31,5 @@ function Progressbar ()
 	};
 }
 
-TestScene.prototype = Object.create(Scene.prototype);
-TestScene.prototype.constructor = TestScene;
+Progressbar.prototype = Object.create(Scene.prototype);
+Progressbar.prototype.constructor = Progressbar;
