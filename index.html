@@ -6,85 +6,11 @@
 	<title>Revision17</title>
 	<link rel="stylesheet" href="demo.css">
 	
-	<script src="libraries/load.js"></script>
 	<script src="libraries/twgl-full.js"></script>
-
-	<script src="libraries/gl-matrix-min.js"></script>
-	<script src="libraries/blender-html5-animations.js"></script>
-	<script src="libraries/audiostreamsource.min.js"></script>
-	<script src="libraries/jquery-3.1.0.js"></script>
-
+	<script src="libraries/load.js"></script>
+	<!--<script src="libraries/audiostreamsource.min.js"></script>-->
 	<script src="libraries/stats.js"></script>
 
-	<!-- FOR TESTING
-	<script id="vs" type="notjs">
-		attribute vec4 position;
-		void main() {
-			gl_Position = position;
-		}
-	</script>
-
-	<script id="fs" type="notjs">
-		precision mediump float;
-		uniform vec2 resolution;
-		uniform float time;
-		void main() {
-			vec2 uv = gl_FragCoord.xy / resolution;
-			float color = 0.0;
-			// lifted from glslsandbox.com
-			color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );
-			color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );
-			color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );
-			color *= sin( time / 10.0 ) * 0.5;
-			gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
-		}
-	</script>-->
-
-<!-- 	<script src="scripts/helpers/maths/utils.js"></script>
-	<script src="scripts/helpers/maths/cooldown.js"></script>
-
-	<script src="scripts/helpers/graphics/framebuffer.js"></script>
-	<script src="scripts/helpers/graphics/gui.js"></script>
-
-	<script src="scripts/helpers/geometries/simple.js"></script>
-	<script src="scripts/helpers/geometries/grid.js"></script>
-	<script src="scripts/helpers/geometries/particles.js"></script>
-	<script src="scripts/helpers/geometries/parsePointCloud.js"></script>
-	<script src="scripts/helpers/geometries/parseMesh.js"></script>
-
-	<script src="scripts/helpers/inputs/mouse.js"></script>
-
-	<script src="scripts/helpers/medias/assets.js"></script>
-	<script src="scripts/helpers/medias/video.js"></script>
-	<script src="scripts/helpers/medias/audioAnalyser.js"></script>
-	
-	<script src="scripts/entities/bases/entity.js"></script>
-	<script src="scripts/entities/bases/dummy.js"></script>
-	<script src="scripts/entities/bases/boid.js"></script>
-	<script src="scripts/entities/bases/mesh.js"></script>
-	<script src="scripts/entities/bases/shader.js"></script>
-	<script src="scripts/entities/bases/pointCloud.js"></script>
-	
-	<script src="scripts/helpers/graphics/text.js"></script>
-	
-	<script src="scripts/entities/elements/bamboo.js"></script>
-	<script src="scripts/entities/elements/character.js"></script>
-	<script src="scripts/entities/elements/butterflies.js"></script>
-	<script src="scripts/entities/elements/bush.js"></script>
-	<script src="scripts/entities/elements/moss.js"></script>
-	<script src="scripts/entities/elements/skull.js"></script>
-	<script src="scripts/entities/elements/opticalflow.js"></script>
-	<script src="scripts/entities/elements/painting.js"></script>
-
-	<script src="scripdu kts/scenes/animations/blender.js"></script>
-	<script src="scripts/scenes/animations/cloudSceneAnimation.js"></script>
-	<script src="scripts/scenes/animations/introSceneAnimation.js"></script>
-	<script src="scripts/scenes/animations/mainSceneAnimation.js"></script>
-
-	<script src="scripts/scenes/introScene.js"></script>
-	<script src="scripts/scenes/cloudScene.js"></script>
-	<script src="scripts/scenes/loadingScene.js"></script>
-	<script src="scripts/scenes/mainScene.js"></script>-->
 	<script src="elDemo/stuff/camera.js"></script>
 	<script src="elDemo/stuff/drawable.js"></script>
 	<script src="elDemo/stuff/shader.js"></script>
@@ -95,8 +21,6 @@
 
 	<script src="elDemo/engine.js"></script> 
 	<script src="elDemo/main.js"></script>
-
-	<!-- <script data-main="scripts/main" src="libraries/require.js"></script> -->
 </head>
 <body>
 	<canvas id="c"></canvas>

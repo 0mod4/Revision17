@@ -1,6 +1,6 @@
 function Scene ()
 {
-	this.start = Date.now();
+	this.start = 0;
 	this.time = 0;
 	this.duration = 0; //in ms
 	//this.cooldown = new Cooldown(this.time);
