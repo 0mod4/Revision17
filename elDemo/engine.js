@@ -12,36 +12,38 @@ var planetVideo;
 
 var programInfo;
 var bufferInfo;
-//var music;
-//var musicIsReady = false;
+
+var audioPlayer;
 
 engine.init = function ()
 {
-		stats = new Stats();
-		stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-		document.body.appendChild(stats.dom);
+	audioPlayer = new AudioPlayer();
 
-		gl = twgl.getWebGLContext(document.getElementById("c"), { premultipliedAlpha: false, alpha: false });
-		gl.getExtension("OES_texture_float");
-		gl.getExtension("OES_texture_float_linear");
+	stats = new Stats();
+	stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+	document.body.appendChild(stats.dom);
 
-		Progressbar = new Progressbar();
-		Progressbar.init(7000);
+	gl = twgl.getWebGLContext(document.getElementById("c"), { premultipliedAlpha: false, alpha: false });
+	gl.getExtension("OES_texture_float");
+	gl.getExtension("OES_texture_float_linear");
 
-		Scene1 = new TestScene();
-		Scene1.init(5000);
+	Progressbar = new Progressbar();
+	Progressbar.init(7000);
 
-		//music = document.getElementById("music");
-		//music.oncanplaythrough = function() {
-		//	musicIsReady = true;
-		//};
-		//music.load();
+	Scene1 = new TestScene();
+	Scene1.init(5000);
 
-		//if (gl.getError() !== 0)
-		//	console.log(gl.getError());
+	//music = document.getElementById("music");
+	//music.oncanplaythrough = function() {
+	//	musicIsReady = true;
+	//};
+	//music.load();
 
-		Progressbar.run();
-		requestAnimationFrame(render);
+	//if (gl.getError() !== 0)
+	//	console.log(gl.getError());
+
+	Progressbar.run();
+	requestAnimationFrame(render);
 };
 
 function render(time) {
