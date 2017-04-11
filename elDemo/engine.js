@@ -26,7 +26,7 @@ engine.init = function ()
 		gl.getExtension("OES_texture_float_linear");
 
 		Progressbar = new Progressbar();
-		Progressbar.init(5000);
+		Progressbar.init(7000);
 
 		Scene1 = new TestScene();
 		Scene1.init(5000);
