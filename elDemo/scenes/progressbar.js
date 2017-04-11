@@ -4,8 +4,8 @@ function Progressbar ()
 
 	this.init = function (duration, time)
 	{
-		this.camera.position = [0, 2, -5];
-		this.camera.target = [0, 2, 0];
+		this.camera.position = [0, 0, -1];
+		this.camera.target = [0, 0, 0];
 		this.duration = duration;
 
 		var arrays = {
@@ -23,10 +23,6 @@ function Progressbar ()
 
 	this.update = function ()
 	{
-		// camera
-		this.camera.orbitControl();
-		this.camera.position[1] = 1;
-
 		this.draw();
 	};
 }

@@ -3,7 +3,6 @@ function Scene ()
 	this.start = 0;
 	this.time = 0;
 	this.duration = 0; //in ms
-	//this.cooldown = new Cooldown(this.time);
 
 	this.camera = new Camera();
 	this.drawables = [];
@@ -34,7 +33,6 @@ function Scene ()
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		
 		this.time = (Date.now() - this.start) / 1000;
-		// //this.cooldown.update(this.time);
 		this.camera.update();
 
 		for (var i = 0; i < this.drawables.length; ++i) {
