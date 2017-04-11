@@ -3,11 +3,11 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 	this.buffer = twgl.createBufferInfoFromArrays(gl, bufferArray);
 
 	this.shader = new Shader(vertexShader, fragmentShader, uniforms);
-	this.shader.uniforms.u_time = 0;
-	this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
-	this.shader.uniforms.u_view = m4.identity();
-	this.shader.uniforms.u_world = m4.identity();
-	this.shader.uniforms.u_cameraDirection = [0,0,1];
+	this.shader.uniforms.time = 0;
+	this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+	this.shader.uniforms.view = m4.identity();
+	this.shader.uniforms.world = m4.identity();
+	this.shader.uniforms.cameraDirection = [0,0,1];
 
 	this.displayType = gl.TRIANGLES;
 	this.position = [0, 0, 0];
@@ -28,19 +28,16 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 			m4.translate(this.matrix, this.anchor, this.matrix);
 			m4.scale(this.matrix, this.scale, this.matrix);
 
-			this.shader.uniforms.u_world = this.matrix;
-			m4.multiply(this.matrix, camera.viewProjection, this.shader.uniforms.u_view);
+			m4.multiply(this.matrix, camera.viewProjection, this.shader.uniforms.view);
 
-			this.shader.uniforms.u_time = time || 0;
-			this.shader.uniforms.u_resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
-
-			this.shader.uniforms.u_cameraDirection[0] = camera.target[0] - camera.position[0];
-			this.shader.uniforms.u_cameraDirection[1] = camera.target[1] - camera.position[1];
-			this.shader.uniforms.u_cameraDirection[2] = camera.target[2] - camera.position[2];
+			this.shader.uniforms.cameraDirection[0] = camera.target[0] - camera.position[0];
+			this.shader.uniforms.cameraDirection[1] = camera.target[1] - camera.position[1];
+			this.shader.uniforms.cameraDirection[2] = camera.target[2] - camera.position[2];
 
 			gl.useProgram(this.shader.program);
 			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
-			this.shader.uniforms.time = time||0;
+			this.shader.uniforms.time = time || 0;
+			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);
 			//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
 			twgl.drawBufferInfo(gl, this.buffer);
