@@ -17,7 +17,7 @@ function TestScene ()
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
 
-		this.testDrawable = new Drawable(arrays, "test.vert", "test.frag", uniforms);
+		this.testDrawable = new Drawable(arrays, "default.vert", "test.frag", uniforms);
 		this.addDrawable(this.testDrawable);
 	};
 

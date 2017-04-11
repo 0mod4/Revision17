@@ -17,7 +17,7 @@ function Progressbar ()
 			resolution: [gl.canvas.width, gl.canvas.height]
 		};
 
-		this.testDrawable = new Drawable(arrays, "test.vert", "progressbar.frag", uniforms);
+		this.testDrawable = new Drawable(arrays, "default.vert", "progressbar.frag", uniforms);
 		this.addDrawable(this.testDrawable);
 	};
 
