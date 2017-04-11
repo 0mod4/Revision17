@@ -8,8 +8,8 @@ void main() {
 	float color = 0.0;
 	const float duration = 5.;
 	
-	const vec2 left  = vec2(-1., -0.1);
-	const vec2 right = vec2( 1.,  0.1);
+	const vec2 left  = vec2(-.5, -0.1);
+	const vec2 right = vec2( .5,  0.1);
 	float width = right.x - left.x;
 	float cur = left.x + time/(duration - 1.) * width;
 
@@ -21,6 +21,5 @@ void main() {
 		}
 	}
 
-	color = pow(20.*(uv.x+uv.y), 2.);
 	gl_FragColor = vec4(vec3(color), 1.);
 }
