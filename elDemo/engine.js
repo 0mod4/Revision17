@@ -23,15 +23,15 @@ engine.init = function ()
 	stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 	document.body.appendChild(stats.dom);
 
-	gl = twgl.getWebGLContext(document.getElementById("c"), { premultipliedAlpha: false, alpha: false });
+	gl = twgl.getWebGLContext(document.getElementById("c"), { premultipliedAlpha: false, alpha: true });
 	gl.getExtension("OES_texture_float");
 	gl.getExtension("OES_texture_float_linear");
 
 	Progressbar = new Progressbar();
-	Progressbar.init(7000);
+	Progressbar.init(6000);
 
-	Scene1 = new TestScene();
-	Scene1.init(5000);
+	Scene1 = new TreeScene();
+	Scene1.init(50000);
 
 	//music = document.getElementById("music");
 	//music.oncanplaythrough = function() {
@@ -51,10 +51,11 @@ function render(time) {
 	twgl.resizeCanvasToDisplaySize(gl.canvas);
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
+
 	switch (engine.state)
 	{
 		case State.Begin: {
-			console.log("Begin.")
+			console.log("Begin.");
 			engine.state = State.Progressbar;
 			console.log("Next: Progressbar");
 			break;
