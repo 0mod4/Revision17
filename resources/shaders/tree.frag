@@ -34,7 +34,7 @@ float sdBranch( vec2 p, float w1, float w2, float l )
 float map( vec2 pos )
 {
     const float len = 2.0;
-    const float wid = 0.4;
+    const float wid = 0.2;
     const float lenf = 0.63;
     const float widf = 0.3;
     
@@ -96,9 +96,9 @@ float map( vec2 pos )
 void main( )
 {
     //frame
-    float width = resolution.x/500.;;
-    float height = resolution.y/500.;
-    vec2 midp = vec2(sin(time/20.)*resolution.x/800., cos(time/20.)*resolution.y/800.+height*2.0);
+    float width = 13.0;
+    float height = 6.0;
+    vec2 midp = vec2(0., 3.);//vec2(sin(time/20.)*resolution.x/800., cos(time/20.)*resolution.y/800.+height*2.0);
 
     float minx = midp.x-width/2.0;
     float maxx = midp.x+width/2.0;
@@ -114,7 +114,8 @@ void main( )
     // shape
     float stepval = 0.01;
     float smoothw = 0.01;
-    vec4 col = vec4( smoothstep( stepval-smoothw, stepval, d ) );
+    float val = smoothstep( stepval-smoothw, stepval, d );
+    vec4 col = vec4( vec3(val), 1.0-val);
     
     gl_FragColor = col;
 }

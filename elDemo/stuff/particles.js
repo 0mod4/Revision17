@@ -1,4 +1,4 @@
-function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, texturepath, startsize, lifetime, getStartVec, applyGravity, maxSpeed)
+function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, texturepath, startsize, lifetime, getStartVec, applyGravity, maxSpeed, bounce, randgravity)
 {
 	//n: number of particles
 	//startpositions: x,y,z coordinates of start positions, will be randomly chosen for newly created particles
@@ -35,6 +35,12 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 	if (maxSpeed === undefined)
 		maxSpeed = 1.0;
 
+	if (bounce === undefined)
+		bounce = false;
+
+	if (randgravity === undefined)
+		randgravity = false;
+
 	this.initTex = function(texturepath, handle) { //timing problem using twgl function. this works.
 		texture = gl.createTexture();
 		image = new Image();
@@ -65,6 +71,8 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 	this.applyGravity = applyGravity;
 	this.particles = new Array(this.numParticles).fill(null);
 	this.buffer = null;
+	this.bounce = bounce;
+	this.randgravity = randgravity;
 
 	this.createParticle = function(startpos){
 		var pos;
@@ -96,14 +104,14 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 				n--;
 			}
 		}
-	}
+	};
 
 	this.updateParticles = function(particles){
 		//pass by all particles
 		var nAlive = 0;
 		for (var i=0; i<particles.length; ++i)
 		{
-			if (particles[i] == null) continue; // skip dead particles
+			if (particles[i] === null) continue; // skip dead particles
 			if (particles[i].remlifetime <= 0) // kill particles
 			{
 				particles[i] = null;
@@ -116,9 +124,13 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 			particles[i].pos = [particles[i].pos[0]+particles[i].vec[0]*fac, particles[i].pos[1]+particles[i].vec[1]*fac, particles[i].pos[2]+particles[i].vec[2]*fac];
 			if (this.applyGravity)
 			{
-				particles[i].vec[1] -= 0.098 * age/1000.0;
+				if(this.randgravity)
+					particles[i].vec[1] += (2.0*Math.random()-1.05)*0.2;			
+				else
+					particles[i].vec[1] -= 0.098 * age/1000.0;
 				if(particles[i].pos[1] < -1) {
-					particles[i].vec[1] *= -0.75; // Allow particles to bounce off the floor
+					if(this.bounce)
+						particles[i].vec[1] *= -0.75; // Allow particles to bounce off the floor
 					particles[i].vec = normalize(particles[i].vec);
 					particles[i].pos[1] = -1;
 				}

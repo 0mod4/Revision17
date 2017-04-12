@@ -30,7 +30,7 @@ engine.init = function ()
 	Progressbar = new Progressbar();
 	Progressbar.init(7000);
 
-	Scene1 = new ParticleTestScene();
+	Scene1 = new TreeScene();
 	Scene1.init(50000);
 
 	Progressbar.run();
