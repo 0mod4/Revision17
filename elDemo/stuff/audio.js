@@ -25,7 +25,7 @@ function AudioPlayer() {
 			}
 		);
 
-		audioSource.start(6);
+		audioSource.start(8.5);
 		console.log("Audio loaded.");
 	};
 

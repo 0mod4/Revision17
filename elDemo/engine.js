@@ -28,19 +28,10 @@ engine.init = function ()
 	gl.getExtension("OES_texture_float_linear");
 
 	Progressbar = new Progressbar();
-	Progressbar.init(6000);
+	Progressbar.init(7000);
 
-	Scene1 = new TestScene(); //ParticleTestScene();
+	Scene1 = new ParticleTestScene();
 	Scene1.init(50000);
-
-	//music = document.getElementById("music");
-	//music.oncanplaythrough = function() {
-	//	musicIsReady = true;
-	//};
-	//music.load();
-
-	//if (gl.getError() !== 0)
-	//	console.log(gl.getError());
 
 	Progressbar.run();
 	requestAnimationFrame(render);

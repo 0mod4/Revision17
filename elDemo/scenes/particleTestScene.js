@@ -17,7 +17,7 @@ function ParticleTestScene ()
 
 		this.alpha = true;
 
-		var n = 50;
+		var n = 1000;
 		var startpositions = [-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, 0.5,0.5,0];
 
 		var uniforms = {
@@ -25,8 +25,8 @@ function ParticleTestScene ()
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
 		var spritePath = "../../resources/textures/testSprite.png";
-		var startsize = 10;
-		var lifetime = 10000;
+		var startsize = 50;
+		var lifetime = 1000;
 		var applyGravity = true;
 		var maxSpeed = 0.01;
 		this.particles = new Particles(n, startpositions, "particlesDefault.vert", "particlesDefault.frag", uniforms, spritePath, startsize, lifetime, this.getStartVec, applyGravity, maxSpeed);
@@ -36,10 +36,10 @@ function ParticleTestScene ()
 
 	this.update = function ()
 	{
-		// camera
-		this.camera.orbitControl();
-		this.camera.position[1] = 1;
-
+		if (audioPlayer.dataArray[1] > -33.) {
+			this.particles.spawnParticles(10, this.getStartVec([1,1,1]));
+			this.particles.createBufferArrayFromParticles(this.particles.particles);
+		}
 		this.draw();
 	};
 }
