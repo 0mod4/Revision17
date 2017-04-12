@@ -36,7 +36,7 @@ function Scene ()
 		this.camera.update();
 
 		for (var i = 0; i < this.drawables.length; ++i) {
-			this.drawables[i].draw(this.camera, this.time);
+			this.drawables[i].draw(this.camera, this.time, audioPlayer.getFFTtexture());
 		}
 
 	};

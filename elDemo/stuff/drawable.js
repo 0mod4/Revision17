@@ -18,7 +18,7 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 
 	// this.axis = new Dummy(createAxis());
 
-	this.draw = function (camera, time)
+	this.draw = function (camera, time, music)
 	{
 		if (this.shader.state == 1) {
 			m4.translation(this.position, this.matrix);
@@ -38,6 +38,7 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
 			this.shader.uniforms.time = time || 0;
 			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+			this.shader.uniforms.music = music;
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);
 			//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
 			twgl.drawBufferInfo(gl, this.buffer);

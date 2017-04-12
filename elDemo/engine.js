@@ -30,7 +30,7 @@ engine.init = function ()
 	Progressbar = new Progressbar();
 	Progressbar.init(6000);
 
-	Scene1 = new ParticleTestScene();
+	Scene1 = new TestScene(); //ParticleTestScene();
 	Scene1.init(50000);
 
 	//music = document.getElementById("music");
@@ -50,7 +50,6 @@ function render(time) {
 	stats.begin();
 	twgl.resizeCanvasToDisplaySize(gl.canvas);
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
 
 	switch (engine.state)
 	{
