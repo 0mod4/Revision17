@@ -26,8 +26,10 @@ function Scene ()
 			gl.enable(gl.BLEND);
 			//gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);	
 
-			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+			//gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			gl.blendEquation(gl.FUNC_ADD);
+			gl.disable(gl.DEPTH_TEST);
 		}
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
