@@ -1,13 +1,18 @@
 precision mediump float;
 uniform vec2 resolution;
 uniform float time;
+uniform sampler2D music; // in [-100, -20]
 
 void main() {
 	vec2 uv = gl_FragCoord.xy / resolution;
-	float color = 0.0;
-	color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );
-	color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );
-	color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );
-	color *= sin( time / 10.0 ) * 0.5;
-	gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
+
+	const float minDec = -100.;
+	const float maxDec = -20.;
+	float fft = (texture2D(music, vec2(0, uv.x)).x - minDec)/(maxDec-minDec);
+
+	vec3 color = vec3(0.);
+	if (uv.y < fft) {
+		color = vec3(fft, .3, .3);
+	}
+	gl_FragColor = vec4(color, 1.);
 }

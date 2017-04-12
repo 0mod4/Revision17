@@ -15,6 +15,7 @@ function TestScene ()
 		var uniforms = {
 			time: time * 0.001,
 			resolution: [gl.canvas.width, gl.canvas.height],
+			music: audioPlayer.getFFTtexture()
 		};
 
 		this.testDrawable = new Drawable(arrays, "default.vert", "test.frag", uniforms);
@@ -23,10 +24,6 @@ function TestScene ()
 
 	this.update = function ()
 	{
-		// camera
-		this.camera.orbitControl();
-		this.camera.position[1] = 1;
-
 		this.draw();
 	};
 }
