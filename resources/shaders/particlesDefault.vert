@@ -1,6 +1,9 @@
-attribute vec4 position;
+attribute vec3 position;
+attribute float lifetime;
+
+uniform float startsize;
 
 void main() {
-	gl_Position = position;
-	gl_PointSize = 10.0;
+	gl_Position = vec4(position.xyz, 1.);
+	gl_PointSize = startsize*lifetime/1000.;
 }

@@ -1,6 +1,11 @@
-function Particles (bufferArray, vertexShader, fragmentShader, uniforms)
+function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, texturepath, startsize, lifetime, getStartVec, applyGravity, maxSpeed)
 {
-	this.buffer = twgl.createBufferInfoFromArrays(gl, bufferArray);
+	//n: number of particles
+	//startpositions: x,y,z coordinates of start positions, will be randomly chosen for newly created particles
+	//startsize: particle start size 
+	//lifetime (in ms): if 0, particles live forever, else size is going to be interpolated linearly between startsize and 0 over lifetime
+	//getStartVec: function taking pos argument [x,y,z], returns [x,y,z] start vector (will be normalized)
+	//applyGravity: change start vector on every update a little towards ground
 
 	this.shader = new Shader(vertexShader, fragmentShader, uniforms);
 	this.shader.uniforms.time = 0;
@@ -16,7 +21,128 @@ function Particles (bufferArray, vertexShader, fragmentShader, uniforms)
 	this.anchor = [0, 0, 0];
 	this.matrix = new Float32Array(16);
 
-	// this.axis = new Dummy(createAxis());
+	this.alpha = true;
+
+	if (texturepath === undefined)
+		texturepath = "../../resources/textures/testSprite.png";
+
+	if (lifetime === undefined)
+		lifetime = 0;
+
+	if (applyGravity === undefined)
+		applyGravity = false;
+
+	if (maxSpeed === undefined)
+		maxSpeed = 1.0;
+
+	this.initTex = function(texturepath, handle) { //timing problem using twgl function. this works.
+	  texture = gl.createTexture();
+	  image = new Image();
+	  image.onload = function() { handle(image, texture); };
+	  image.src = texturepath;
+	  return texture;
+	};
+
+	this.handleTextureLoaded = function(image, texture) {
+	  gl.bindTexture(gl.TEXTURE_2D, texture);
+	  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+	  gl.generateMipmap(gl.TEXTURE_2D);
+	  gl.bindTexture(gl.TEXTURE_2D, null);
+	};
+
+	this.spriteTexture = this.initTex(texturepath, this.handleTextureLoaded);
+
+	//-------particle stuff----------/
+	this.lifetime = lifetime;
+	this.startsize = startsize;
+	this.numParticles = n;
+	this.startPositions = startpositions;
+	this.getStartVec = getStartVec;
+	this.maxSpeed = maxSpeed;
+	this.applyGravity = applyGravity;
+	console.log(this.getStartVec([0,0,0]));
+	this.particles = [];
+
+	this.createParticle = function(startpos){
+		var pos;
+		if (startpos.length > 3) //choose random start position
+		{
+			var randpos = Math.floor(Math.random()*startpos.length/3.0)*3;
+			pos = [startpos[randpos], startpos[randpos+1], startpos[randpos+2]];
+		}
+		else 
+		{
+			pos = startpos;
+		}
+
+		var lifetime = (Math.random()+0.5)*this.lifetime;
+		p = {pos: pos, 
+			 lifetime: lifetime,
+			 remlifetime: lifetime,
+			 starttime: Date.now(),
+			 vec: normalize(this.getStartVec(pos)),
+			 speed: Math.random()*this.maxSpeed+0.001,
+			};
+		return p;
+	};
+
+	this.createParticles = function(n, startpos){
+		var particles = [];
+		for (var i=0; i<n; ++i)
+		{
+			particles.push(this.createParticle(startpos));
+		}
+		return particles;
+	};
+
+	this.createBufferArrayFromParticles = function(particles){
+		var position = [];
+		var lifetime = [];
+		for (var i=0; i<particles.length; ++i)
+		{
+			position = position.concat(particles[i].pos);
+			lifetime.push(particles[i].remlifetime);
+		}
+		var bufferArray = {
+		  	position: position,
+		  	lifetime: { numComponents: 1, data: lifetime,},
+		};
+		return bufferArray;
+	};
+
+	this.updateParticles = function(particles){
+		//pass by all particles
+		for (var i=0; i<particles.length; ++i)
+		{
+			var age = Date.now()-particles[i].starttime;
+			particles[i].remlifetime = particles[i].lifetime - age;
+			if (particles[i].remlifetime <= 0)
+			{
+				particles[i] = this.createParticle(this.startPositions);
+			}
+			else
+			{
+				var fac = particles[i].speed;
+				particles[i].pos = [particles[i].pos[0]+particles[i].vec[0]*fac, particles[i].pos[1]+particles[i].vec[1]*fac, particles[i].pos[2]+particles[i].vec[2]*fac];
+				if (this.applyGravity)
+				{
+        			particles[i].vec[1] -= 0.098 * age/1000.0;
+        			if(particles[i].pos[1] < -1) {
+        			    particles[i].vec[1] *= -0.75; // Allow particles to bounce off the floor
+        			    particles[i].vec = normalize(particles[i].vec);
+        			    particles[i].pos[1] = -1;
+        			}
+				}
+			}
+		}
+		//fill buffer
+		this.buffer = twgl.createBufferInfoFromArrays(gl, this.createBufferArrayFromParticles(this.particles));
+	};
+
+	this.particles = this.createParticles(this.numParticles, this.startPositions);
+	this.buffer = twgl.createBufferInfoFromArrays(gl, this.createBufferArrayFromParticles(this.particles));
 
 	this.draw = function (camera, time)
 	{
@@ -34,13 +160,22 @@ function Particles (bufferArray, vertexShader, fragmentShader, uniforms)
 			this.shader.uniforms.cameraDirection[1] = camera.target[1] - camera.position[1];
 			this.shader.uniforms.cameraDirection[2] = camera.target[2] - camera.position[2];
 
-			gl.useProgram(this.shader.program);
-			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
 			this.shader.uniforms.time = time || 0;
 			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+			this.shader.uniforms.startsize = this.startsize;
+
+			gl.useProgram(this.shader.program);
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);
-			//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
+
+			//update particles
+			this.updateParticles(this.particles);
+
+			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
 			//gl.enable(gl.PROGRAM_POINT_SIZE);//gl.POINT_SMOOTH);
+        	gl.activeTexture(gl.TEXTURE0);
+        	gl.bindTexture(gl.TEXTURE_2D, this.spriteTexture);
+        	gl.uniform1i(this.shader.program.uSampler, 0);
+
 			twgl.drawBufferInfo(gl, this.buffer, this.displayType);
 
 			//gl.drawArrays(gl.POINTS, 0, 3);

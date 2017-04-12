@@ -2,6 +2,13 @@ function ParticleTestScene ()
 {
 	Scene.call(this); 
 
+	this.getStartVec = function(startpos){
+		if (startpos[0] == -0.5)
+			return [1.0,0.0,0.0];
+		else
+			return [2.0*Math.random()-1.0, 2.0*Math.random()-1.0, 2.0*Math.random()-1.0];
+	};
+
 	this.init = function (duration, time)
 	{
 		this.camera.position = [0, 2, -5];
@@ -10,15 +17,19 @@ function ParticleTestScene ()
 
 		this.alpha = true;
 
-		var arrays = {
-		  position: [-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, -0.5,0.5,0, 0.5,-0.5,0, 0.5,0.5,0],
-		};
+		var n = 50;
+		var startpositions = [-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, 0.5,0.5,0];
 
 		var uniforms = {
 			time: time * 0.001,
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
-		this.particles = new Particles(arrays, "default.vert", "red.frag", uniforms);
+		var spritePath = "../../resources/textures/testSprite.png";
+		var startsize = 10;
+		var lifetime = 10000;
+		var applyGravity = true;
+		var maxSpeed = 0.01;
+		this.particles = new Particles(n, startpositions, "particlesDefault.vert", "particlesDefault.frag", uniforms, spritePath, startsize, lifetime, this.getStartVec, applyGravity, maxSpeed);
 
 		this.addDrawable(this.particles);
 	};
