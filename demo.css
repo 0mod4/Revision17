@@ -25,7 +25,7 @@ canvas {
   	opacity: 0.1;
 }
 #overlay.geisha {
-	background-image: url("resources/textures/clothtest.png");
+	background-image: url("resources/img/clothtest.png");
 	background-repeat: no-repeat;
 	background-position: 10% 50%;
 	background-size: 10%;

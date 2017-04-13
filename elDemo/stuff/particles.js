@@ -41,17 +41,9 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 	if (randgravity === undefined)
 		randgravity = false;
 
-	this.initTex = function(texturepath, handle) { //timing problem using twgl function. this works.
-		texture = gl.createTexture();
-		image = new Image();
-		image.onload = function() { handle(image, texture); };
-		image.src = texturepath;
-		return texture;
-	};
-
 	if (texturepath !== null)
 	{
-		this.spriteTexture = this.initTex(
+		this.spriteTexture = initTex(
 			texturepath,
 			function(image, texture) {
 				gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -62,10 +54,12 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 				gl.bindTexture(gl.TEXTURE_2D, null);
 			}
 		);
+		this.shader.uniforms.useTex = true;
 	}
 	else
 	{
 		this.spriteTexture = null;
+		this.shader.uniforms.useTex = false;
 	}
 
 	//-------particle stuff----------/
@@ -187,11 +181,6 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 			this.shader.uniforms.time = time || 0;
 			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
 			this.shader.uniforms.startsize = this.startsize;
-
-			if (this.spriteTexture !== null)
-				this.shader.uniforms.useTex = true;
-			else
-				this.shader.uniforms.useTex = false;
 
 			gl.useProgram(this.shader.program);
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);

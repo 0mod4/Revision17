@@ -6,3 +6,11 @@ function normalize(vec)
 	vec.z/=len;
 	return vec; 
 }
+
+function initTex(texturepath, handle) { //timing problem using twgl function. this works.
+	texture = gl.createTexture();
+	image = new Image();
+	image.onload = function() { handle(image, texture); };
+	image.src = texturepath;
+	return texture;
+}

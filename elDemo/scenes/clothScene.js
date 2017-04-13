@@ -12,15 +12,14 @@ function ClothScene ()
 		this.alpha = true;
 
 		var arrays = {
-		  position: [-1,-1,0, 1,-1,0, -1,1,0, -1,1,0, 1,-1,0, 1,1,0],
+		  position: [-0.8,-0.2,0, -0.5,-0.2,0, -0.8,0.2,0, -0.8,0.2,0, -0.5,-0.2,0, -0.5,0.2,0],
 		};
 
 		var uniforms = {
 			time: time * 0.001,
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
-		this.clothDrawable = new Drawable(arrays, "default.vert", "cloth.frag", uniforms);
-
+		this.clothDrawable = new Drawable(arrays, "default.vert", "cloth.frag", uniforms, "../../resources/textures/testTex.png");
 
 		var n = 3000;
 		this.startpositions = [-0.7,0,0, -0.7,-0.05,0, -0.7,-0.1,0];//-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, 0.5,0.5,0];
@@ -47,7 +46,7 @@ function ClothScene ()
 		this.particles = new Particles(n, this.startpositions, "particlesDefault.vert", "particlesDefault.frag", uniforms, spritePath, startsize, lifetime, this.getStartVec, applyGravity, maxSpeed, false, true, startcol, endcol);
 
 		this.addDrawable(this.particles);
-		//this.addDrawable(this.treeDrawable);
+		this.addDrawable(this.clothDrawable);
 	};
 
 	this.update = function ()

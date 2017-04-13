@@ -1,4 +1,4 @@
-function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
+function Drawable (bufferArray, vertexShader, fragmentShader, uniforms, texturepath)
 {
 	this.buffer = twgl.createBufferInfoFromArrays(gl, bufferArray);
 
@@ -15,6 +15,27 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 	this.scale = [1, 1, 1];
 	this.anchor = [0, 0, 0];
 	this.matrix = new Float32Array(16);
+
+	if (texturepath !== undefined)
+	{
+		this.texture = initTex(
+			texturepath,
+			function(image, texture) {
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+				gl.generateMipmap(gl.TEXTURE_2D);
+				gl.bindTexture(gl.TEXTURE_2D, null);
+			}
+		);
+		this.shader.uniforms.useTex = true;
+	}
+	else
+	{
+		this.texture = null;
+		this.shader.uniforms.useTex = false;
+	}
 
 	// this.axis = new Dummy(createAxis());
 
@@ -35,13 +56,24 @@ function Drawable (bufferArray, vertexShader, fragmentShader, uniforms)
 			this.shader.uniforms.cameraDirection[2] = camera.target[2] - camera.position[2];
 
 			gl.useProgram(this.shader.program);
-			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
 			this.shader.uniforms.time = time || 0;
 			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
 			this.shader.uniforms.music = music;
+
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);
+			twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
+
+			if (this.texture !== null)
+			{
+				gl.activeTexture(gl.TEXTURE0);
+				gl.bindTexture(gl.TEXTURE_2D, this.texture);
+				gl.uniform1i(this.shader.program.uSampler, 0);
+			}
+			else
+				this.shader.uniforms.useTex = false;
+
 			//twgl.drawBufferInfo(gl, this.displayType, this.buffer);
-			twgl.drawBufferInfo(gl, this.buffer);
+			twgl.drawBufferInfo(gl, this.buffer, this.displayType);
 
 			// this.axis.matrix = this.matrix;
 			// this.axis.draw(camera);
