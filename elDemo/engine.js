@@ -30,7 +30,7 @@ engine.init = function ()
 	Progressbar = new Progressbar();
 	Progressbar.init(7000);
 
-	Scene1 = new TreeScene();
+	Scene1 = new ClothScene();
 	Scene1.init(50000);
 
 	Progressbar.run();
@@ -56,6 +56,7 @@ function render(time) {
 			{
 				console.log("Progressbar is over");
 				engine.state = State.Scene1;
+				document.getElementById("overlay").className = "geisha";
 				Scene1.run();
 				console.log("Next: Scene 1");
 			}

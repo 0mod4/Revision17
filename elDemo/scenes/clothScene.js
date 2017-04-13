@@ -1,4 +1,4 @@
-function TreeScene ()
+function ClothScene ()
 {
 	Scene.call(this); 
 	this.startpositions = null;
@@ -19,24 +19,35 @@ function TreeScene ()
 			time: time * 0.001,
 			resolution: [gl.canvas.width, gl.canvas.height],
 		};
-		this.treeDrawable = new Drawable(arrays, "default.vert", "tree.frag", uniforms);
+		this.clothDrawable = new Drawable(arrays, "default.vert", "cloth.frag", uniforms);
 
-		var n = 1000;
-		this.startpositions = [0.2,-0.5,0, -0.25,0,0, 0.2,0,0, -0.2,0.1,0, 0.15,0.1,0, -0.15,0.3,0, -0.08,0.4,0, 0.1,0.3,0, 0,0.5,0, 0.2,-0.2,0, -0.28,-0.2,0];//-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, 0.5,0.5,0];
 
-		var spritePath = "../../resources/textures/flower.png";
+		var n = 3000;
+		this.startpositions = [-0.7,0,0, -0.7,-0.05,0, -0.7,-0.1,0];//-0.5,-0.5,0, 0.5,-0.5,0, -0.5,0.5,0, 0.5,0.5,0];
+
+		var startcol = [0.98, 0.84, 0.69, 1.0];
+		var endcol = [0.98, 0.84, 0.69, 0.0];
+		var lifetime = 6000;
+		uniforms = {
+			time: time * 0.001,
+			resolution: [gl.canvas.width, gl.canvas.height],
+			startcol: startcol,
+			endcol: endcol,
+			lifespan: lifetime,
+			changecol: true,
+		};
+		var spritePath = "../../resources/textures/tdot2.png";
 		var startsize = 3;
-		var lifetime = 8000;
-		var applyGravity = true;
+		var applyGravity = false;
 		var maxSpeed = 0.001;
 
 		this.getStartVec = function(pos){
 			return [2*Math.random(), Math.random()-1, 2*Math.random()-1];
 		};
-		this.particles = new Particles(n, this.startpositions, "particlesDefault.vert", "particlesDefault.frag", uniforms, spritePath, startsize, lifetime, this.getStartVec, applyGravity, maxSpeed, false, true);
+		this.particles = new Particles(n, this.startpositions, "particlesDefault.vert", "particlesDefault.frag", uniforms, spritePath, startsize, lifetime, this.getStartVec, applyGravity, maxSpeed, false, true, startcol, endcol);
 
 		this.addDrawable(this.particles);
-		this.addDrawable(this.treeDrawable);
+		//this.addDrawable(this.treeDrawable);
 	};
 
 	this.update = function ()

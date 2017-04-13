@@ -24,7 +24,7 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 	this.alpha = true;
 
 	if (texturepath === undefined)
-		texturepath = "/resources/textures/testSprite.png";
+		texturepath = null;
 
 	if (lifetime === undefined)
 		lifetime = 0;
@@ -49,17 +49,24 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 		return texture;
 	};
 
-	this.spriteTexture = this.initTex(
-		texturepath,
-		function(image, texture) {
-			gl.bindTexture(gl.TEXTURE_2D, texture);
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-			gl.generateMipmap(gl.TEXTURE_2D);
-			gl.bindTexture(gl.TEXTURE_2D, null);
-		}
-	);
+	if (texturepath !== null)
+	{
+		this.spriteTexture = this.initTex(
+			texturepath,
+			function(image, texture) {
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+				gl.generateMipmap(gl.TEXTURE_2D);
+				gl.bindTexture(gl.TEXTURE_2D, null);
+			}
+		);
+	}
+	else
+	{
+		this.spriteTexture = null;
+	}
 
 	//-------particle stuff----------/
 	this.lifetime = lifetime;
@@ -181,6 +188,11 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 			this.shader.uniforms.resolution = [gl.drawingBufferWidth, gl.drawingBufferHeight];
 			this.shader.uniforms.startsize = this.startsize;
 
+			if (this.spriteTexture !== null)
+				this.shader.uniforms.useTex = true;
+			else
+				this.shader.uniforms.useTex = false;
+
 			gl.useProgram(this.shader.program);
 			twgl.setUniforms(this.shader.info, this.shader.uniforms);
 
@@ -190,9 +202,12 @@ function Particles (n, startpositions, vertexShader, fragmentShader, uniforms, t
 			if (this.buffer) {
 				twgl.setBuffersAndAttributes(gl, this.shader.info, this.buffer);
 				//gl.enable(gl.PROGRAM_POINT_SIZE);//gl.POINT_SMOOTH);
-				gl.activeTexture(gl.TEXTURE0);
-				gl.bindTexture(gl.TEXTURE_2D, this.spriteTexture);
-				gl.uniform1i(this.shader.program.uSampler, 0);
+				if (this.spriteTexture !== null)
+				{
+					gl.activeTexture(gl.TEXTURE0);
+					gl.bindTexture(gl.TEXTURE_2D, this.spriteTexture);
+					gl.uniform1i(this.shader.program.uSampler, 0);
+				}
 
 				twgl.drawBufferInfo(gl, this.buffer, this.displayType);
 			}

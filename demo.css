@@ -12,15 +12,27 @@ canvas {
 	background: transparent;
 }
 #paper {
-  content: "Test";
-  color: white;
-  font-size: 100px;
-  background-image: url("https://previews.123rf.com/images/donatas1205/donatas12051505/donatas1205150500022/40592758-Seamless-paper-texture-rough-recycled-cardboard-background-Stock-Photo.jpg");
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: block;
-  height: 100%;
-  width: 100%;
-  opacity: 0.1;
+  	content: "Test";
+  	color: white;
+  	font-size: 100px;
+  	background-image: url("https://previews.123rf.com/images/donatas1205/donatas12051505/donatas1205150500022/40592758-Seamless-paper-texture-rough-recycled-cardboard-background-Stock-Photo.jpg");
+  	position: absolute;
+  	left: 0;
+  	top: 0;
+  	display: block;
+  	height: 100%;
+  	width: 100%;
+  	opacity: 0.1;
+}
+#overlay.geisha {
+	background-image: url("resources/textures/clothtest.png");
+	background-repeat: no-repeat;
+	background-position: 10% 50%;
+	background-size: 10%;
+  	position: absolute;
+  	left: 0;
+  	top: 0;
+  	display: block;
+  	height: 100%;
+  	width: 100%;
 }
